@@ -3,21 +3,26 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 
-import "src/Contract.sol";
+import "../src/Counter.sol";
 
 contract TestContract is Test {
-    Contract c;
+    Counter c;
 
     function setUp() public {
-        c = new Contract();
+        // Basically the same as `Counter c = new Counter();`
+        c = new Counter(3);
     }
 
-    function testBar() public {
-        assertEq(uint256(1), uint256(1), "ok");
+    function testIncrement() public {
+        c.increment();
+        c.increment();
+        assertEq(c.getNum(), 5, "OK");
     }
 
-    function testFoo(uint256 x) public {
-        vm.assume(x < type(uint128).max);
-        assertEq(x + x, x * 2);
+    function testDecrement() public {
+        c.decrement();
+        c.decrement();
+        c.decrement();
+        c.decrement();
     }
 }
