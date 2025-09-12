@@ -23,6 +23,5 @@ contract TestContract is Test {
         c.decrement();
         c.decrement();
         c.decrement();
-        c.decrement();
     }
 }
