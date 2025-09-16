@@ -90,4 +90,18 @@ contract TestContract is Test {
         // Now do transferFrom
         m.transferFrom(address(this), 0x7361360D60BE09274EccfebAb510753cA894a7d7, 10);
     }
+
+
+    // VM Deal
+    function test_DealExample() public {
+        address token = 0x7361360D60BE09274EccfebAb510753cA894a7d7;
+        uint256 amount = 10 ether;
+        // Deal is used to =>    Set the balance of "account" to "10 ether"
+        vm.deal(token, amount);
+
+        // Assert that the balance is set correctly
+        assertEq(address(token).balance, amount, "ok");
+    }
+
+    
 }

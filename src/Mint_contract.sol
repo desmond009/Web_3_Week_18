@@ -4,10 +4,14 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+// std libraries
+import {console} from "forge-std/console.sol";
+
 contract Mint_contract is ERC20, Ownable {
     constructor() ERC20("VIJU_Coin", "VIJ") Ownable(msg.sender) {}
 
     function mint(address to, uint256 amount) public onlyOwner {
+        console.logString("Hi there");
         _mint(to, amount);
     }
 }
