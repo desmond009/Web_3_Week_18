@@ -6,6 +6,8 @@ import "../src/Mint_contract.sol";
 
 contract TestContract is Test {
     Mint_contract m;
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
 
     function setUp() public {
         m = new Mint_contract();
@@ -56,5 +58,36 @@ contract TestContract is Test {
         assertEq(m.balanceOf(address(this)), 95 ,"OK");
         assertEq(m.balanceOf(0x7361360D60BE09274EccfebAb510753cA894a7d7), 5, "OK");
         assertEq(m.allowance(address(this), 0x7361360D60BE09274EccfebAb510753cA894a7d7), 5);
+    }
+
+
+    // Testing Transfer event
+    function testTransfer_event() public {
+        m.mint(address(this), 100);
+
+        // We are expecting the event
+        vm.expectEmit(true, true, false, true);
+        emit Transfer(address(this), 0x7361360D60BE09274EccfebAb510753cA894a7d7, 10);
+
+        // We are actually calling the event
+        m.transfer(0x7361360D60BE09274EccfebAb510753cA894a7d7, 10);
+    }
+
+    // Testing Approval event
+    function testApproval_event() public {
+        m.mint(address(this), 100);
+
+        // We are expecting the Approval event
+        vm.expectEmit(true, true, false, true);
+        emit Approval(address(this), 0x7361360D60BE09274EccfebAb510753cA894a7d7, 10);
+
+        // We are actually calling the Approval event
+        m.approve(0x7361360D60BE09274EccfebAb510753cA894a7d7, 10);
+
+        // Now change the owner of the contract
+        vm.prank(0x7361360D60BE09274EccfebAb510753cA894a7d7);
+
+        // Now do transferFrom
+        m.transferFrom(address(this), 0x7361360D60BE09274EccfebAb510753cA894a7d7, 10);
     }
 }
